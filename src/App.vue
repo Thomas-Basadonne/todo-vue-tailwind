@@ -7,6 +7,9 @@ const name = ref([""]);
 const input_content = ref([""]);
 const input_category = ref(null);
 
+const categories = ref(["coding", "personal", "workout", "film"]);
+const selectedCategory = ref(null);
+
 const todos_asc = computed(() =>
   todos.value.sort((a, b) => {
     return b.createdAt - a.createdAt;
@@ -33,6 +36,14 @@ const removeTodo = (todo) => {
   todos.value = todos.value.filter((t) => t !== todo);
 };
 
+const filteredTodos = computed(() => {
+  if (!selectedCategory) {
+    return todos_asc.value;
+  } else {
+    return todos_asc.value.filter((todo) => todo.category === selectedCategory);
+  }
+});
+
 watch(
   todos,
   (newVal) => {
@@ -52,30 +63,34 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1 class="text-3xl font-bold underline">ciaooo</h1>
-
+  <h1>Dai Vita alla Tua Produttività con il Task Manager Personalizzato</h1>
+  <!-- <select v-model="selectedCategory" class="my-2">
+    <option value="" disabled>Seleziona una categoria</option>
+    <option v-for="category in categories" :key="category" :value="category">
+      {{ category }}
+    </option>
+  </select> -->
   <main class="app">
     <section class="greeting">
-      <h2 class="title">
-        Come va
-        <input type="text" placeholder="Inserisci il Nome" v-model="name" />?
-        Pronto ad essere produttivo?
+      <h2>
+        What's up,
+        <input type="text" placeholder="Inserisci il Nome" v-model="name" />
       </h2>
     </section>
 
-    <section class="create-todo">
+    <section class="create-todo w-full">
       <h3>Crea la task</h3>
       <form @submit.prevent="addTodo">
-        <h4>Aggiungi i tuoi task</h4>
-        <input
-          type="text"
-          placeholder="Studia Tailwind"
-          v-model="input_content"
-        />
-        <!-- {{ input_content }} -->
-        <h4>Scegli la categoria</h4>
-        <div class="options">
-          <label for="">
+        <div class="flex justify-start gap-1 my-2">
+          <h4>Aggiungi una nuova <span class="font-semibold">Task</span></h4>
+          <input type="text" placeholder="Scrivi qui" v-model="input_content" />
+          <!-- {{ input_content }} -->
+        </div>
+        <h4 class="my-2">
+          Scegli la <span class="font-semibold">categoria:</span>
+        </h4>
+        <div class="options grid grid-cols-4 gap-4 my-2">
+          <label class="flex items-center gap-1 category coding">
             <input
               type="radio"
               name="category"
@@ -84,7 +99,7 @@ onMounted(() => {
             />
             <div>Coding</div>
           </label>
-          <label for="">
+          <label class="flex items-center gap-1 category personal">
             <input
               type="radio"
               name="category"
@@ -93,31 +108,48 @@ onMounted(() => {
             />
             <div>Personal</div>
           </label>
+          <label class="flex items-center gap-1 category workout">
+            <input
+              type="radio"
+              name="category"
+              value="workout"
+              v-model="input_category"
+            />
+            <div>Workout</div>
+          </label>
+          <label class="flex items-center gap-1 category film">
+            <input
+              type="radio"
+              name="category"
+              value="film"
+              v-model="input_category"
+            />
+            <div>Film</div>
+          </label>
           <!-- {{ input_category }} -->
         </div>
 
-        <input type="submit" value="Add Task" />
+        <input class="btn add" type="submit" value="Add Task" />
       </form>
     </section>
 
-    <section class="todo-list">
+    <section class="todo-list w-full">
       <h3>Todo List</h3>
       <div class="list">
         <div
           v-for="todo in todos_asc"
-          :class="['todo-item', { done: todo.done }]"
+          :class="['todo-item', todo.category, { done: todo.done }]"
         >
-          <label
-            ><input type="checkbox" v-model="todo.done" />
-            <span :class="['bubble', todo.category]"></span>
-          </label>
+          <input type="checkbox" v-model="todo.done" />
 
           <div class="todo-content">
             <input type="text" v-model="todo.content" />
           </div>
 
-          <div class="actions">
-            <button class="delete" @click="removeTodo(todo)">cancella</button>
+          <div class="flex justify-end w-full">
+            <button class="btn delete" @click="removeTodo(todo)">
+              Cancella
+            </button>
           </div>
         </div>
       </div>
