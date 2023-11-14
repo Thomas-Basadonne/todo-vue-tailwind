@@ -24,7 +24,9 @@ const filteredTodos = computed(() => {
 });
 
 const addTodo = () => {
-  if (input_content.value.trim() === "" || input_category.value === null) {
+  // Ottieni il valore come stringa e quindi rimuovi gli spazi vuoti
+  const inputValue = input_content.value[0].trim();
+  if (inputValue === "" || input_category.value === null) {
     return;
   }
 
@@ -65,9 +67,30 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>Dai Vita alla Tua Produttività con il Task Manager Personalizzato</h1>
+  <div class="relative jumbo h-96">
+    <h1>Il tuo <span class="text-lightmode-100">Task Manager</span></h1>
+    <div class="absolute bottom-0 left-0 w-full">
+      <svg
+        preserveAspectRatio="none"
+        viewBox="0 0 1200 120"
+        xmlns="http://www.w3.org/2000/svg"
+        style="width: 100%; height: 85px; transform: rotate(180deg)"
+      >
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color: #3c82f6" />
+            <stop offset="100%" style="stop-color: #16b6d4" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M321.39 56.44c58-10.79 114.16-30.13 172-41.86 82.39-16.72 168.19-17.73 250.45-.39C823.78 31 906.67 72 985.66 92.83c70.05 18.48 146.53 26.09 214.34 3V0H0v27.35a600.21 600.21 0 00321.39 29.09z"
+          fill="url(#grad)"
+        />
+      </svg>
+    </div>
+  </div>
 
-  <main class="app">
+  <main class="app mt-[-220px]">
     <section class="greeting">
       <h2>
         What's up,
@@ -86,7 +109,7 @@ onMounted(() => {
         <h4 class="my-2">
           Scegli la <span class="font-semibold">categoria:</span>
         </h4>
-        <div class="options grid grid-cols-4 gap-4 my-2">
+        <div class="options grid grid-cols-2 lg:grid-cols-4 gap-4 my-2">
           <label class="flex items-center gap-1 category coding">
             <input
               type="radio"
@@ -126,30 +149,42 @@ onMounted(() => {
           <!-- {{ input_category }} -->
         </div>
 
-        <div class="flex justify-between">
-          <input class="btn add" type="submit" value="Add Task" />
-          <button class="btn reset bg-amber-400" @click="resetFilter">
-            Vedi tutti
-          </button>
-        </div>
+        <input class="btn add" type="submit" value="Add Task" />
       </form>
     </section>
 
     <section class="todo-list w-full">
-      <h3>Todo List</h3>
+      <div class="flex justify-between items-center">
+        <h3>Todo List:</h3>
+        <button class="btn reset bg-amber-400" @click="resetFilter">
+          Vedi tutti
+        </button>
+      </div>
       <div class="list">
         <div
           v-for="todo in filteredTodos"
           :class="['todo-item', todo.category, { done: todo.done }]"
         >
-          <input type="checkbox" v-model="todo.done" />
+          <input
+            class="checked:bg-red-500"
+            type="checkbox"
+            v-model="todo.done"
+          />
 
-          <div class="todo-content">
-            <input type="text" v-model="todo.content" />
+          <div class="todo-content grow">
+            <input
+              type="text"
+              v-model="todo.content"
+              :class="{ 'done-text': todo.done }"
+            />
           </div>
 
           <div class="flex justify-end w-full">
-            <button class="btn delete" @click="removeTodo(todo)">
+            <button
+              class="btn delete transition-transform transform-gpu ease-out duration-300"
+              @click="removeTodo(todo)"
+              :class="{ 'done-btn': todo.done }"
+            >
               Cancella
             </button>
           </div>
