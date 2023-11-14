@@ -1,6 +1,9 @@
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
+import { useDark, useToggle } from "@vueuse/core";
 
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 const todos = ref([]);
 const name = ref([""]);
 
@@ -68,7 +71,12 @@ onMounted(() => {
 
 <template>
   <div class="relative jumbo h-96">
-    <h1>Il tuo <span class="text-lightmode-100">Task Manager</span></h1>
+    <h1>
+      Il tuo
+      <span class="text-lightmode-100 dark:text-red-400">Task Manager</span>
+    </h1>
+    <span>{{ isDark ? "Dark" : "Light" }} mode</span>
+    <button @click="toggleDark()">mode</button>
     <div class="absolute bottom-0 left-0 w-full">
       <svg
         preserveAspectRatio="none"
@@ -156,7 +164,7 @@ onMounted(() => {
     <section class="todo-list w-full">
       <div class="flex justify-between items-center">
         <h3>Todo List:</h3>
-        <button class="btn reset bg-amber-400" @click="resetFilter">
+        <button class="btn reset bg-lightmode-400" @click="resetFilter">
           Vedi tutti
         </button>
       </div>

@@ -28,8 +28,11 @@
     @apply text-lg font-semibold py-1 rounded w-fit;
   }
 
+  input {
+    @apply cursor-pointer;
+  }
   input[type="text"] {
-    @apply px-1 bg-inherit rounded outline-none w-fit;
+    @apply px-1 bg-inherit rounded outline-none w-fit cursor-text;
   }
 
   .btn {
@@ -37,7 +40,7 @@
   }
 
   .add {
-    @apply bg-green-500;
+    @apply bg-lightmode-400;
   }
 
   .delete {
@@ -45,19 +48,19 @@
   }
 
   .category {
-    @apply px-2 py-1 rounded;
+    @apply px-2 py-1 rounded cursor-pointer;
   }
   .coding {
-    @apply bg-lime-300;
+    @apply bg-darkmode-100;
   }
   .personal {
-    @apply bg-purple-300;
+    @apply bg-darkmode-200;
   }
   .workout {
-    @apply bg-sky-300;
+    @apply bg-category-400;
   }
   .film {
-    @apply bg-red-300;
+    @apply bg-cyan-400;
   }
 
   .todo-item {

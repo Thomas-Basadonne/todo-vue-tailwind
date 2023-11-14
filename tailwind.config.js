@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: "class",
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     extend: {
@@ -15,6 +16,12 @@ export default {
           200: "#8E8FFA",
           300: "#7752FE",
           400: "#190482",
+        },
+        category: {
+          100: "#B9F3FC",
+          200: "#687EFF",
+          300: "#98E4FF",
+          400: "#95BDFF",
         },
       },
     },
