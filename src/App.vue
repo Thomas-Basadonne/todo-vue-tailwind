@@ -1,9 +1,13 @@
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
+
+//libreria VueUse
 import { useDark, useToggle } from "@vueuse/core";
 
+//gestione del tema
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
+
 const todos = ref([]);
 const name = ref([""]);
 
@@ -73,11 +77,10 @@ onMounted(() => {
   <div class="relative jumbo h-96">
     <h1>
       Il tuo
-      <span class="text-lightmode-100 dark:text-red-400">Task Manager</span>
+      <span class="text-lightmode-100">Task Manager</span>
     </h1>
-    <span>{{ isDark ? "Dark" : "Light" }} mode</span>
-    <button @click="toggleDark()">mode</button>
-    <div class="absolute bottom-0 left-0 w-full">
+    <button @click="toggleDark()">{{ isDark ? "Light" : "Dark" }} mode</button>
+    <div class="absolute bottom-0 left-0 w-full dark:invisible">
       <svg
         preserveAspectRatio="none"
         viewBox="0 0 1200 120"
@@ -96,8 +99,26 @@ onMounted(() => {
         />
       </svg>
     </div>
+    <div class="absolute bottom-0 left-0 w-full invisible dark:visible">
+      <svg
+        preserveAspectRatio="none"
+        viewBox="0 0 1200 120"
+        xmlns="http://www.w3.org/2000/svg"
+        style="width: 100%; height: 85px; transform: rotate(180deg)"
+      >
+        <defs>
+          <linearGradient id="dark" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color: #7752fe" />
+            <stop offset="100%" style="stop-color: #190482" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M321.39 56.44c58-10.79 114.16-30.13 172-41.86 82.39-16.72 168.19-17.73 250.45-.39C823.78 31 906.67 72 985.66 92.83c70.05 18.48 146.53 26.09 214.34 3V0H0v27.35a600.21 600.21 0 00321.39 29.09z"
+          fill="url(#dark)"
+        />
+      </svg>
+    </div>
   </div>
-
   <main class="app mt-[-220px]">
     <section class="greeting">
       <h2>
@@ -164,7 +185,10 @@ onMounted(() => {
     <section class="todo-list w-full">
       <div class="flex justify-between items-center">
         <h3>Todo List:</h3>
-        <button class="btn reset bg-lightmode-400" @click="resetFilter">
+        <button
+          class="btn reset bg-lightmode-400 dark:bg-darkmode-300"
+          @click="resetFilter"
+        >
           Vedi tutti
         </button>
       </div>

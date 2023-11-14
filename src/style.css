@@ -4,7 +4,10 @@
 
 @layer base {
   html {
-    @apply font-mono bg-gradient-to-r from-cyan-500 to-blue-500;
+    @apply font-mono;
+  }
+  body {
+    @apply bg-gradient-to-r from-cyan-500 to-blue-500 dark:bg-gradient-to-l dark:from-darkmode-300 dark:to-darkmode-400;
   }
   .jumbo {
     background-image: url(./assets/img/jumbo.jpg);
@@ -13,7 +16,7 @@
     background-repeat: no-repeat;
   }
   main {
-    @apply flex flex-col items-start w-fit lg:w-1/2	 mx-auto bg-lightmode-200 rounded pt-2 pb-3 px-4 drop-shadow-2xl;
+    @apply flex flex-col items-start w-fit lg:w-1/2	 mx-auto bg-lightmode-200 dark:bg-slate-600 dark:text-white rounded pt-2 pb-3 px-4 drop-shadow-2xl;
   }
 
   h1 {
@@ -40,7 +43,7 @@
   }
 
   .add {
-    @apply bg-lightmode-400;
+    @apply bg-lightmode-400 dark:bg-darkmode-300;
   }
 
   .delete {
@@ -51,23 +54,23 @@
     @apply px-2 py-1 rounded cursor-pointer;
   }
   .coding {
-    @apply bg-darkmode-100;
+    @apply bg-darkmode-100 dark:bg-categorydark-100;
   }
   .personal {
-    @apply bg-darkmode-200;
+    @apply bg-darkmode-200 dark:bg-categorydark-200;
   }
   .workout {
-    @apply bg-category-400;
+    @apply bg-category-400 dark:bg-categorydark-300;
   }
   .film {
-    @apply bg-cyan-400;
+    @apply bg-cyan-400 dark:bg-categorydark-400;
   }
 
   .todo-item {
     @apply p-1 my-2 rounded-lg flex items-baseline justify-start gap-1;
   }
   .done {
-    @apply bg-gray-500;
+    @apply bg-gray-500 dark:bg-slate-800;
   }
   .done-text {
     @apply line-through text-white;
