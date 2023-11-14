@@ -7,14 +7,21 @@ const name = ref([""]);
 const input_content = ref([""]);
 const input_category = ref(null);
 
-const categories = ref(["coding", "personal", "workout", "film"]);
-const selectedCategory = ref(null);
-
 const todos_asc = computed(() =>
   todos.value.sort((a, b) => {
     return b.createdAt - a.createdAt;
   })
 );
+
+const filteredTodos = computed(() => {
+  if (!input_category.value) {
+    return todos_asc.value;
+  }
+
+  return todos_asc.value.filter(
+    (todo) => todo.category === input_category.value
+  );
+});
 
 const addTodo = () => {
   if (input_content.value.trim() === "" || input_category.value === null) {
@@ -29,20 +36,15 @@ const addTodo = () => {
   });
 
   input_content.value = "";
-  input_category.value = "";
+  // input_category.value = "";
 };
 
+const resetFilter = () => {
+  input_category.value = "";
+};
 const removeTodo = (todo) => {
   todos.value = todos.value.filter((t) => t !== todo);
 };
-
-const filteredTodos = computed(() => {
-  if (!selectedCategory) {
-    return todos_asc.value;
-  } else {
-    return todos_asc.value.filter((todo) => todo.category === selectedCategory);
-  }
-});
 
 watch(
   todos,
@@ -64,12 +66,7 @@ onMounted(() => {
 
 <template>
   <h1>Dai Vita alla Tua Produttività con il Task Manager Personalizzato</h1>
-  <!-- <select v-model="selectedCategory" class="my-2">
-    <option value="" disabled>Seleziona una categoria</option>
-    <option v-for="category in categories" :key="category" :value="category">
-      {{ category }}
-    </option>
-  </select> -->
+
   <main class="app">
     <section class="greeting">
       <h2>
@@ -129,7 +126,12 @@ onMounted(() => {
           <!-- {{ input_category }} -->
         </div>
 
-        <input class="btn add" type="submit" value="Add Task" />
+        <div class="flex justify-between">
+          <input class="btn add" type="submit" value="Add Task" />
+          <button class="btn reset bg-amber-400" @click="resetFilter">
+            Vedi tutti
+          </button>
+        </div>
       </form>
     </section>
 
@@ -137,7 +139,7 @@ onMounted(() => {
       <h3>Todo List</h3>
       <div class="list">
         <div
-          v-for="todo in todos_asc"
+          v-for="todo in filteredTodos"
           :class="['todo-item', todo.category, { done: todo.done }]"
         >
           <input type="checkbox" v-model="todo.done" />
