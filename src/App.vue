@@ -1,139 +1,83 @@
 <script setup>
+import Header from "./components/Header.vue";
+import GreetingSection from "./components/GreetingSection.vue";
+import TodoSection from "./components/TodoSection.vue";
 import { ref, onMounted, computed, watch } from "vue";
 
-//libreria VueUse
-import { useDark, useToggle } from "@vueuse/core";
+// // lista todos
+// const todos = ref([]);
 
-//gestione del tema
-const isDark = useDark();
-const toggleDark = useToggle(isDark);
+// // Dati form Create todo
+// const input_content = ref([""]);
+// const input_category = ref(null);
 
-const todos = ref([]);
-const name = ref([""]);
+// const todos_asc = computed(() =>
+//   todos.value.sort((a, b) => {
+//     return b.createdAt - a.createdAt;
+//   })
+// );
 
-const input_content = ref([""]);
-const input_category = ref(null);
+// const filteredTodos = computed(() => {
+//   if (!input_category.value) {
+//     return todos_asc.value;
+//   }
 
-const todos_asc = computed(() =>
-  todos.value.sort((a, b) => {
-    return b.createdAt - a.createdAt;
-  })
-);
+//   return todos_asc.value.filter(
+//     (todo) => todo.category === input_category.value
+//   );
+// });
 
-const filteredTodos = computed(() => {
-  if (!input_category.value) {
-    return todos_asc.value;
-  }
+// const addTodo = () => {
+//   // Ottieni il valore come stringa e quindi rimuovi gli spazi vuoti
+//   const inputValue = input_content.value[0].trim();
+//   if (inputValue === "" || input_category.value === null) {
+//     return;
+//   }
 
-  return todos_asc.value.filter(
-    (todo) => todo.category === input_category.value
-  );
-});
+//   todos.value.push({
+//     content: input_content.value,
+//     category: input_category.value,
+//     done: false,
+//     createdAt: new Date().getTime(),
+//   });
 
-const addTodo = () => {
-  // Ottieni il valore come stringa e quindi rimuovi gli spazi vuoti
-  const inputValue = input_content.value[0].trim();
-  if (inputValue === "" || input_category.value === null) {
-    return;
-  }
+//   input_content.value = "";
+//   // input_category.value = "";
+// };
 
-  todos.value.push({
-    content: input_content.value,
-    category: input_category.value,
-    done: false,
-    createdAt: new Date().getTime(),
-  });
+// const resetFilter = () => {
+//   input_category.value = "";
+// };
+// const removeTodo = (todo) => {
+//   todos.value = todos.value.filter((t) => t !== todo);
+// };
 
-  input_content.value = "";
-  // input_category.value = "";
-};
+// watch(
+//   todos,
+//   (newVal) => {
+//     localStorage.setItem("todos", JSON.stringify(newVal));
+//   },
+//   { deep: true }
+// );
 
-const resetFilter = () => {
-  input_category.value = "";
-};
-const removeTodo = (todo) => {
-  todos.value = todos.value.filter((t) => t !== todo);
-};
-
-watch(
-  todos,
-  (newVal) => {
-    localStorage.setItem("todos", JSON.stringify(newVal));
-  },
-  { deep: true }
-);
-
-watch(name, (newVal) => {
-  localStorage.setItem("name", newVal);
-});
-
-onMounted(() => {
-  name.value = localStorage.getItem("name") || "";
-  todos.value = JSON.parse(localStorage.getItem("todos")) || [];
-});
+// onMounted(() => {
+//   todos.value = JSON.parse(localStorage.getItem("todos")) || [];
+// });
 </script>
 
 <template>
-  <div class="relative jumbo h-96">
-    <h1>
-      Il tuo
-      <span class="text-lightmode-100">Task Manager</span>
-    </h1>
-    <button @click="toggleDark()">{{ isDark ? "Light" : "Dark" }} mode</button>
-    <div class="absolute bottom-0 left-0 w-full dark:invisible">
-      <svg
-        preserveAspectRatio="none"
-        viewBox="0 0 1200 120"
-        xmlns="http://www.w3.org/2000/svg"
-        style="width: 100%; height: 85px; transform: rotate(180deg)"
-      >
-        <defs>
-          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color: #3c82f6" />
-            <stop offset="100%" style="stop-color: #16b6d4" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M321.39 56.44c58-10.79 114.16-30.13 172-41.86 82.39-16.72 168.19-17.73 250.45-.39C823.78 31 906.67 72 985.66 92.83c70.05 18.48 146.53 26.09 214.34 3V0H0v27.35a600.21 600.21 0 00321.39 29.09z"
-          fill="url(#grad)"
-        />
-      </svg>
-    </div>
-    <div class="absolute bottom-0 left-0 w-full invisible dark:visible">
-      <svg
-        preserveAspectRatio="none"
-        viewBox="0 0 1200 120"
-        xmlns="http://www.w3.org/2000/svg"
-        style="width: 100%; height: 85px; transform: rotate(180deg)"
-      >
-        <defs>
-          <linearGradient id="dark" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color: #7752fe" />
-            <stop offset="100%" style="stop-color: #190482" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M321.39 56.44c58-10.79 114.16-30.13 172-41.86 82.39-16.72 168.19-17.73 250.45-.39C823.78 31 906.67 72 985.66 92.83c70.05 18.48 146.53 26.09 214.34 3V0H0v27.35a600.21 600.21 0 00321.39 29.09z"
-          fill="url(#dark)"
-        />
-      </svg>
-    </div>
-  </div>
-  <main class="app mt-[-220px]">
-    <section class="greeting">
-      <h2>
-        What's up,
-        <input type="text" placeholder="Inserisci il Nome" v-model="name" />
-      </h2>
-    </section>
+  <Header />
 
-    <section class="create-todo w-full">
+  <main class="app mt-[-220px]">
+    <GreetingSection />
+    <TodoSection />
+    <!-- CREATE A TODO -->
+    <!-- <section class="create-todo w-full">
       <h3>Crea la task</h3>
       <form @submit.prevent="addTodo">
         <div class="flex justify-start gap-1 my-2">
           <h4>Aggiungi una nuova <span class="font-semibold">Task</span></h4>
           <input type="text" placeholder="Scrivi qui" v-model="input_content" />
-          <!-- {{ input_content }} -->
         </div>
         <h4 class="my-2">
           Scegli la <span class="font-semibold">categoria:</span>
@@ -175,14 +119,14 @@ onMounted(() => {
             />
             <div>Film</div>
           </label>
-          <!-- {{ input_category }} -->
         </div>
 
         <input class="btn add" type="submit" value="Add Task" />
       </form>
-    </section>
+    </section> -->
 
-    <section class="todo-list w-full">
+    <!-- TODO LIST -->
+    <!-- <section class="todo-list w-full">
       <div class="flex justify-between items-center">
         <h3>Todo List:</h3>
         <button
@@ -222,7 +166,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
   </main>
 </template>
 
