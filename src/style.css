@@ -34,6 +34,11 @@
   input {
     @apply cursor-pointer;
   }
+  /*  Non funziona =/ 
+  input[type="checkbox"] {
+    @apply indeterminate:bg-gray-300 checked:bg-red-500;
+  } */
+
   input[type="text"] {
     @apply px-1 bg-inherit rounded outline-none w-fit cursor-text;
   }
@@ -67,7 +72,7 @@
   }
 
   .todo-item {
-    @apply p-1 my-2 rounded-lg flex items-baseline justify-start gap-1;
+    @apply p-1 my-2 rounded-lg flex items-center justify-start gap-1;
   }
   .done {
     @apply bg-gray-500 dark:bg-slate-800;

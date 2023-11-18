@@ -130,7 +130,7 @@ onMounted(() => {
         v-for="todo in filteredTodos"
         :class="['todo-item', todo.category, { done: todo.done }]"
       >
-        <input class="checked:bg-red-500" type="checkbox" v-model="todo.done" />
+        <input type="checkbox" v-model="todo.done" />
 
         <div class="todo-content grow">
           <input
@@ -142,11 +142,15 @@ onMounted(() => {
 
         <div class="flex justify-end w-full">
           <button
-            class="btn delete transition-transform transform-gpu ease-out duration-300"
+            class="btn delete transition-transform transform-gpu ease-out duration-300 flex items-center"
             @click="removeTodo(todo)"
             :class="{ 'done-btn': todo.done }"
           >
-            Cancella
+            <span class="hidden md:inline-block mr-1">Cancella</span>
+            <font-awesome-icon
+              :icon="['far', 'trash-can']"
+              class="p-1 md:px-0"
+            />
           </button>
         </div>
       </div>
