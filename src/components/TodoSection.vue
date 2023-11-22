@@ -35,7 +35,7 @@ const addTodo = () => {
   });
 
   input_content.value = "";
-  input_category.value = null;
+  // input_category.value = null;
 };
 
 const resetFilter = () => {
