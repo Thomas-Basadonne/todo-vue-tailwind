@@ -1,16 +1,20 @@
 <script setup>
+// Importa le funzioni di Vue necessarie
 import { ref, onMounted, computed, watch } from "vue";
 
-const todos = ref([]);
-const input_content = ref("");
-const input_category = ref(null);
+// Dichiarazione di variabili reattive
+const todos = ref([]); // Array contenente i todo
+const input_content = ref(""); // Contenuto del nuovo todo
+const input_category = ref(null); // Categoria del nuovo todo (inizializzata a null)
 
+// Computed property per ordinare i todo in ordine decrescente di data di creazione
 const todos_asc = computed(() =>
   todos.value.sort((a, b) => {
     return b.createdAt - a.createdAt;
   })
 );
 
+// Computed property per filtrare i todo in base alla categoria selezionata
 const filteredTodos = computed(() => {
   if (!input_category.value) {
     return todos_asc.value;
@@ -21,12 +25,14 @@ const filteredTodos = computed(() => {
   );
 });
 
+// Funzione per aggiungere un nuovo todo
 const addTodo = () => {
   const inputValue = input_content.value.trim();
   if (inputValue === "" || input_category.value === null) {
     return;
   }
 
+  // Aggiunge un nuovo todo all'array
   todos.value.push({
     content: inputValue,
     category: input_category.value,
@@ -34,26 +40,33 @@ const addTodo = () => {
     createdAt: new Date().getTime(),
   });
 
+  // Resetta il contenuto dell'input e la categoria
   input_content.value = "";
   // input_category.value = null;
 };
 
+// Funzione per azzerare il filtro di categoria
 const resetFilter = () => {
   input_category.value = "";
 };
+
+// Funzione per rimuovere un todo
 const removeTodo = (todo) => {
   todos.value = todos.value.filter((t) => t !== todo);
 };
 
+// Watcher per monitorare i cambiamenti negli array dei todo e salvare nel localStorage
 watch(
   todos,
   (newVal) => {
     localStorage.setItem("todos", JSON.stringify(newVal));
   },
-  { deep: true }
+  { deep: true } // Opzione "deep" per monitorare le modifiche nei sotto-oggetti
 );
 
+// Hook onMounted che viene eseguito dopo la creazione del componente
 onMounted(() => {
+  // Inizializza l'array dei todo con i dati memorizzati nel localStorage, se disponibili
   todos.value = JSON.parse(localStorage.getItem("todos")) || [];
 });
 </script>
